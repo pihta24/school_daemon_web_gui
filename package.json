@@ -14,8 +14,14 @@
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
     "next": "13.1.5",
+    "next-auth": "4.18.9",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "4.9.4"
+    "socket.io": "^4.5.4",
+    "socket.io-client": "^4.5.4",
+    "typescript": "4.9.4",
+    "utf-8-validate": "^5.0.5",
+    "bufferutil": "^4.0.5",
+    "supports-color": "^8.1.1"
   }
 }

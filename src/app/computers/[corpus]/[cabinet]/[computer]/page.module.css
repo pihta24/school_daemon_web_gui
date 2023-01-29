@@ -1,0 +1,14 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6rem;
+  min-height: 100vh;
+}
+
+.image {
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 2rem;
+}
