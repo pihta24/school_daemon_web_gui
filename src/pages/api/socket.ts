@@ -21,6 +21,7 @@ interface NextApiResponseWithSocket extends NextApiResponse {
 }
 
 const connections = new Map<string, Map<string, Array<SocketId>>>();
+const last_image = new Map<string, Map<string, string>>();
 let ip = "";
 
 export default function handler(req: NextApiRequest, res: NextApiResponseWithSocket) {
@@ -72,6 +73,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponseWithSoc
                 io.of("/").adapter.rooms.forEach((value, key) => {
                     if (hostname.search(key) !== -1) {
                         io.to(key).emit('image', {image: image, hostname: key + hostname.split(key)[1].replace("\n", "")});
+                        last_image.get(key)?.set(key + hostname.split(key)[1].replace("\n", ""), image);
                     }
                 });
             });
@@ -94,6 +96,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponseWithSoc
                 if (cabinet) {
                     hostname += `-${cabinet}`;
                     socket.join(hostname)
+                    last_image.get(hostname)?.forEach((image, hostname) => {
+                        socket.emit('image', {image: image, hostname: hostname});
+                    });
                     if (computer) {
                         hostname += `-${computer}`;
                     }
@@ -111,12 +116,20 @@ export default function handler(req: NextApiRequest, res: NextApiResponseWithSoc
                         c_corpus.forEach((cabinet, c_name) => {
                             cabinet.splice(cabinet.indexOf(socket.id), 1);
                             if (cabinet.length === 0) {
-                                io.in("daemon").emit("stream_off", `${name}-${c_name}`);
+                                setTimeout(() => {
+                                    disconnect(cabinet, `${name}-${c_name}`);
+                                });
                             }
                         });
                     })
                 }
             });
+
+            const disconnect = (cabinet: Array<SocketId>, to_disconnect: string) => {
+                if (cabinet.length === 0) {
+                    io.in("daemon").emit("stream_off", to_disconnect);
+                }
+            }
         });
 
         res.socket.server.io = io;

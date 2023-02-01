@@ -31,6 +31,14 @@ export default function Home({ params }: {params: {corpus: string, cabinet: stri
                 img.className = styles.image
                 img.alt = `${corpus}-${cabinet}-${computer}`
                 img.src = ""
+                img.onclick = () => {
+                    window.location.href = `/computers/${corpus}/${cabinet}/${computer}`;
+                }
+                img.title = `Перейти в ${corpus}-${cabinet}-${computer}`
+                img.oncontextmenu = () => {
+                    window.location.href = `/computers/${corpus}/${cabinet}/${computer}`;
+                    return false;
+                }
                 div.appendChild(img)
             })
         })()
