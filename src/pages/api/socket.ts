@@ -71,7 +71,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponseWithSoc
                 const {image, hostname} = data;
                 io.of("/").adapter.rooms.forEach((value, key) => {
                     if (hostname.search(key) !== -1) {
-                        io.to(key).emit('image', {image: image, hostname: key + hostname.split(key)[1]});
+                        io.to(key).emit('image', {image: image, hostname: key + hostname.split(key)[1].replace("\n", "")});
                     }
                 });
             });
