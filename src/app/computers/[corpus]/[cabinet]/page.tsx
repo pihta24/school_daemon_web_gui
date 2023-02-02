@@ -1,8 +1,11 @@
 "use client"
 
-import io from 'socket.io-client'
-import styles from './page.module.css'
+import io from 'socket.io-client';
+import styles from './page.module.css';
+import {Comfortaa} from "@next/font/google";
 import {useEffect, useState, useRef} from "react";
+
+const comfortaa = Comfortaa({subsets: ["latin", "cyrillic"]});
 
 export default function Home({ params }: {params: {corpus: string, cabinet: string}}) {
     const images = useRef(new Map<string, string>())
@@ -26,9 +29,9 @@ export default function Home({ params }: {params: {corpus: string, cabinet: stri
             })).json() as { computers: string[] }
 
             const div = document.getElementsByClassName(styles.image_box)[0]
-            computers.forEach(computer => {
+            computers?.forEach(computer => {
                 const img = document.createElement("img")
-                img.className = styles.image
+                img.className = styles.image + " " + comfortaa.className
                 img.alt = `${corpus}-${cabinet}-${computer}`
                 img.src = ""
                 img.onclick = () => {
