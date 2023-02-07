@@ -21,7 +21,6 @@ interface NextApiResponseWithSocket extends NextApiResponse {
 }
 
 const connections = new Map<string, Map<string, Array<SocketId>>>();
-const last_image = new Map<string, Map<string, string>>();
 let ip = "";
 
 export default function handler(req: NextApiRequest, res: NextApiResponseWithSocket) {
@@ -51,6 +50,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponseWithSoc
 
 
         io.on('connection', (socket) => {
+            let host = {key: "", hostname: ""};
             let alreadySet = false;
 
             socket.on('setType', (data) => {
@@ -72,8 +72,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponseWithSoc
                 const {image, hostname} = data;
                 io.of("/").adapter.rooms.forEach((value, key) => {
                     if (hostname.search(key) !== -1) {
+                        host = {key: key, hostname: key + hostname.split(key)[1].replace("\n", "")};
                         io.to(key).emit('image', {image: image, hostname: key + hostname.split(key)[1].replace("\n", "")});
-                        last_image.get(key)?.set(key + hostname.split(key)[1].replace("\n", ""), image);
                     }
                 });
             });
@@ -96,9 +96,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponseWithSoc
                 if (cabinet) {
                     hostname += `-${cabinet}`;
                     socket.join(hostname)
-                    last_image.get(hostname)?.forEach((image, hostname) => {
-                        socket.emit('image', {image: image, hostname: hostname});
-                    });
                     if (computer) {
                         hostname += `-${computer}`;
                     }
@@ -123,6 +120,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponseWithSoc
                         });
                     })
                 }
+            });
+
+            socket.on('disconnect', () => {
+                if (host.key === "") return;
+                io.in(host.key).emit("image", {image: null, hostname: host.hostname});
             });
 
             const disconnect = (cabinet: Array<SocketId>, to_disconnect: string) => {

@@ -3,16 +3,16 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 4rem;
+  padding: 1rem;
   min-height: 100vh;
 }
 
 .image {
-    width: 100%;
+    width: auto;
     max-width: 300px;
 }
 
-.image_box {
+.image_container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,4 +20,17 @@
     padding: 4rem;
     gap: 3rem;
     flex-wrap: wrap;
+}
+
+.image_box {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    horiz-align: center;
+    width: 100%;
+    max-width: 300px;
+    border: 3px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
 }

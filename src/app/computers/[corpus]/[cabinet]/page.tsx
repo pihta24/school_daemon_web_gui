@@ -7,17 +7,20 @@ import {useEffect, useState, useRef} from "react";
 
 const comfortaa = Comfortaa({subsets: ["latin", "cyrillic"]});
 
-export default function Home({ params }: {params: {corpus: string, cabinet: string}}) {
+export default function Home({params}: { params: { corpus: string, cabinet: string } }) {
     const images = useRef(new Map<string, string>())
     const [upi, updateImages] = useState(1);
     const {corpus, cabinet} = params
     let first = true;
 
-    useEffect( () => {if (first) socketInitializer().then(); first = false}, []);
+    useEffect(() => {
+        if (first) socketInitializer().then();
+        first = false
+    }, []);
 
-    useEffect( () => {
+    useEffect(() => {
         (async () => {
-            const { computers } = await (await fetch("/api/data/computers/get", {
+            const {computers} = await (await fetch("/api/data/computers/get", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -28,30 +31,38 @@ export default function Home({ params }: {params: {corpus: string, cabinet: stri
                 })
             })).json() as { computers: string[] }
 
-            const div = document.getElementsByClassName(styles.image_box)[0]
+            const div = document.getElementsByClassName(styles.image_container)[0]
             computers?.forEach(computer => {
-                const img = document.createElement("img")
-                img.className = styles.image + " " + comfortaa.className
-                img.alt = `${corpus}-${cabinet}-${computer}`
-                img.src = ""
+                const img_div = document.createElement("div");
+                const img = document.createElement("img");
+                const title = document.createElement("p");
+                title.innerText = `${corpus}-${cabinet}-${computer}`;
+                title.className = comfortaa.className;
+                title.style.margin = "10px";
+                img_div.className = styles.image_box;
+                img.className = styles.image + " " + comfortaa.className;
+                img.alt = `${corpus}-${cabinet}-${computer}`;
+                img.src = "/connection-error.png";
                 img.onclick = () => {
                     window.location.href = `/computers/${corpus}/${cabinet}/${computer}`;
                 }
-                img.title = `Перейти в ${corpus}-${cabinet}-${computer}`
+                img.title = `Перейти в ${corpus}-${cabinet}-${computer}`;
                 img.oncontextmenu = () => {
                     window.location.href = `/computers/${corpus}/${cabinet}/${computer}`;
                     return false;
                 }
-                div.appendChild(img)
+                img_div.appendChild(title);
+                img_div.appendChild(img);
+                div.appendChild(img_div);
             })
         })()
     }, [])
 
-    useEffect( () => {
-        const div = document.getElementsByClassName(styles.image_box)[0]
+    useEffect(() => {
+        const div = document.getElementsByClassName(styles.image_container)[0]
         for (let i = 0; i < div.getElementsByClassName(styles.image).length; i++) {
             const img: HTMLImageElement = div.getElementsByClassName(styles.image)[i] as HTMLImageElement
-            img.src = images.current.get(img.alt.split("-")[img.alt.split("-").length - 1]) || ""
+            img.src = images.current.get(img.alt.split("-")[img.alt.split("-").length - 1]) || "/connection-error.png"
         }
     }, [upi])
 
@@ -81,7 +92,6 @@ export default function Home({ params }: {params: {corpus: string, cabinet: stri
     }
 
 
-
     const sendCommand = async (e: any) => {
         e.preventDefault()
         const other_data = e.target.other_data.value
@@ -101,7 +111,7 @@ export default function Home({ params }: {params: {corpus: string, cabinet: stri
 
     return (
         <main className={styles.main}>
-            <div className={styles.image_box}>
+            <div className={styles.image_container}>
             </div>
             <form onSubmit={sendCommand}>
                 <input name={"command"}/>

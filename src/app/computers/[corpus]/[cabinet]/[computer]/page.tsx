@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 
 
 export default function Home({params}: {params: {corpus: string, cabinet: string, computer: string}}) {
-    const [image, setImage] = useState("")
+    const [image, setImage] = useState("/connection-error.png")
     const {corpus, cabinet, computer} = params
     let first = true;
 
@@ -24,7 +24,7 @@ export default function Home({params}: {params: {corpus: string, cabinet: string
 
         socket.on("image", (data) => {
             const {image, hostname} = data;
-            if (hostname.search(`${corpus}-${cabinet}-${computer}`) !== -1) setImage(image);
+            if (hostname.search(`${corpus}-${cabinet}-${computer}`) !== -1) setImage(image || "/connection-error.png")
         })
 
         return () => {
@@ -51,7 +51,7 @@ export default function Home({params}: {params: {corpus: string, cabinet: string
 
     return (
         <main className={styles.main}>
-            <img className={styles.image} alt={"alt"} id={"test"} src={image}/>
+            <img className={styles.image} alt={`${corpus}-${cabinet}-${computer}`} id={"test"} src={image}/>
             <form onSubmit={sendCommand}>
                 <input name={"command"}/>
                 <input name={"other_data"}/>
