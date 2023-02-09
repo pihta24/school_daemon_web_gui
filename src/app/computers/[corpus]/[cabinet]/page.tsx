@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 import styles from './page.module.css';
 import {Comfortaa} from "@next/font/google";
 import {useEffect, useState, useRef} from "react";
+import CommandForm from "@/command_sender";
 
 const comfortaa = Comfortaa({subsets: ["latin", "cyrillic"]});
 
@@ -92,32 +93,10 @@ export default function Home({params}: { params: { corpus: string, cabinet: stri
     }
 
 
-    const sendCommand = async (e: any) => {
-        e.preventDefault()
-        const other_data = e.target.other_data.value
-        const command = e.target.command.value
-
-        await fetch(`/api/computer/${corpus}/${cabinet}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                other_data: other_data,
-                command: command
-            })
-        });
-    }
-
     return (
         <main className={styles.main}>
-            <div className={styles.image_container}>
-            </div>
-            <form onSubmit={sendCommand}>
-                <input name={"command"}/>
-                <input name={"other_data"}/>
-                <button>Send</button>
-            </form>
+            <div className={styles.image_container}/>
+            <CommandForm corpus={corpus} cabinet={cabinet} computer={undefined}/>
         </main>
     )
 }
