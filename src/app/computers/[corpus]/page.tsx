@@ -27,7 +27,8 @@ export default function Home({params}: { params: { corpus: string} }) {
 
             const main = document.getElementsByClassName(styles.main)[0]
 
-            for (const cabinet in cabinets) {
+            for (const cabinet of cabinets) {
+                console.log(cabinet)
                 const div = document.createElement("div")
                 const p = document.createElement("p")
 

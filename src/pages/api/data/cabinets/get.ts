@@ -58,6 +58,6 @@ function doMagic(corpus: string, req: NextApiRequest, res: NextApiResponse) {
         return;
     }
 
-    res.status(200).json({cabinets: Object.keys(corp)});
+    res.status(200).json({cabinets: Object.keys(corp.cabinets)});
     return;
 }
