@@ -25,7 +25,7 @@ export default function Home({params}: {params: {corpus: string, cabinet: string
 
         socket.on("image", (data) => {
             const {image, hostname} = data;
-            if (hostname.search(`${corpus}-${cabinet}-${computer}`) !== -1) setImage(image || "/connection-error.png")
+            if (hostname.replace("\n", "").replace(" ", "").endsWith(`${corpus}-${cabinet}-${computer}`)) setImage(image || "/connection-error.png")
         })
 
         return () => {
@@ -35,7 +35,7 @@ export default function Home({params}: {params: {corpus: string, cabinet: string
 
     return (
         <main className={styles.main}>
-            <img className={styles.image} alt={`${corpus}-${cabinet}-${computer}`} id={"test"} src={image}/>
+            <img className={styles.image} alt={`${corpus}-${cabinet}-${computer}`} src={image}/>
             <CommandForm corpus={corpus} cabinet={cabinet} computer={computer}/>
         </main>
     )
