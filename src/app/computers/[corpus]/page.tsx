@@ -13,7 +13,7 @@ export default function Home({params}: { params: { corpus: string} }) {
         const createOnClick = (cab: string) => {return () => {window.location.href = `/computers/${corpus}/${cab}`}};
 
         (async () => {
-            const {cabinets} = await (await fetch("/api/data/computers/get", {
+            const {cabinets} = await (await fetch("/api/data/cabinets/get", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -32,7 +32,9 @@ export default function Home({params}: { params: { corpus: string} }) {
                 const p = document.createElement("p")
 
                 p.textContent = cabinet
+                p.className = comfortaa.className
                 div.onclick = createOnClick(cabinet)
+                div.className = styles.cabinet
 
                 div.appendChild(p)
                 main.appendChild(div)
@@ -43,9 +45,6 @@ export default function Home({params}: { params: { corpus: string} }) {
 
     return (
         <main className={styles.main}>
-            <div className={styles.cabinet} style={comfortaa.style}>
-                <p>Qwerty</p>
-            </div>
 
         </main>
     )
