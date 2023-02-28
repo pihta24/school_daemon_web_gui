@@ -21,8 +21,9 @@ export default function CommandForm({
     }
 
     const setCommand = (e: React.FormEvent<HTMLSelectElement>) => {
-        if (e.currentTarget.value === "ntf" || e.currentTarget.value === "ffx") {
-            document.getElementsByName("other_data")[0].setAttribute("required", "required")
+        if (e.currentTarget.value === "ntf" || e.currentTarget.value === "ffx" || e.currentTarget.value === "wae") {
+            if (e.currentTarget.value === "ntf" || e.currentTarget.value === "ffx")
+                document.getElementsByName("other_data")[0].setAttribute("required", "required")
             document.getElementsByName("other_data")[0].removeAttribute("hidden")
         } else {
             document.getElementsByName("other_data")[0].removeAttribute("required")
