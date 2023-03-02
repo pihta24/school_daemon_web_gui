@@ -21,9 +21,11 @@ export default function CommandForm({
     }
 
     const setCommand = (e: React.FormEvent<HTMLSelectElement>) => {
-        if (e.currentTarget.value === "ntf" || e.currentTarget.value === "ffx" || e.currentTarget.value === "wae") {
-            if (e.currentTarget.value === "ntf" || e.currentTarget.value === "ffx")
+        if (e.currentTarget.value === "ntf" || e.currentTarget.value === "ffx" || e.currentTarget.value === "wae" || e.currentTarget.value === "dwa") {
+            if (e.currentTarget.value === "ntf" || e.currentTarget.value === "ffx" || e.currentTarget.value === "dwa")
                 document.getElementsByName("other_data")[0].setAttribute("required", "required")
+            else
+                document.getElementsByName("other_data")[0].removeAttribute("required")
             document.getElementsByName("other_data")[0].removeAttribute("hidden")
         } else {
             document.getElementsByName("other_data")[0].removeAttribute("required")
@@ -70,6 +72,7 @@ export default function CommandForm({
                     <option value={"dst"}>Разрешить системные настройки только для админов</option>
                     <option value={"wae"}>Включить контроль обоев</option>
                     <option value={"wad"}>Выключить контроль обоев</option>
+                    <option value={"dwa"}>Скачать обои</option>
                 </select>
                 <input name={"other_data"} required={true} hidden={false} style={
                     {
