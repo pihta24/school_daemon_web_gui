@@ -5,7 +5,7 @@
     "role": "teacher",
     "access": {
       "alpha": {
-        "broadcast": true,
+        "broadcast": false,
         "cabinets": {
           "310": {
             "broadcast": true,

@@ -3,6 +3,7 @@
 import styles from './page.module.css'
 import {Comfortaa} from "@next/font/google";
 import {useEffect} from "react";
+import {notFound} from "next/navigation";
 
 const comfortaa = Comfortaa({subsets: ["latin", "cyrillic"]});
 
@@ -13,7 +14,7 @@ export default function Home({params}: { params: { corpus: string} }) {
         const createOnClick = (cab: string) => {return () => {window.location.href = `/computers/${corpus}/${cab}`}};
 
         (async () => {
-            const {cabinets} = await (await fetch("/api/data/cabinets/get", {
+            const response = await fetch("/api/data/cabinets/get", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -21,14 +22,15 @@ export default function Home({params}: { params: { corpus: string} }) {
                 body: JSON.stringify({
                     corpus: corpus
                 })
-            })).json() as { cabinets: string[] }
+            })
+
+            const {cabinets} = await response.json() as { cabinets: string[] }
 
             cabinets.sort()
 
             const main = document.getElementsByClassName(styles.main)[0]
 
             for (const cabinet of cabinets) {
-                console.log(cabinet)
                 const div = document.createElement("div")
                 const p = document.createElement("p")
 

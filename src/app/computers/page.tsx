@@ -1,33 +1,43 @@
 "use client"
 
-import io from 'socket.io-client'
 import styles from './page.module.css'
-import {useEffect, useState} from "react";
+import {Comfortaa} from "@next/font/google";
+import {useEffect} from "react";
 
+const comfortaa = Comfortaa({subsets: ["latin", "cyrillic"]});
 
 export default function Home() {
-    const [image, setImage] = useState("")
+    useEffect(() => {
+        const createOnClick = (corp: string) => {return () => {window.location.href = `/computers/${corp}/`}};
 
-    useEffect( () => {socketInitializer().then()}, []);
+        (async () => {
+            const {corpusa} = await (await fetch("/api/data/corpus/get", {
+                method: "POST",
+            })).json() as { corpusa: Array<string[]> }
 
-    const socketInitializer = async () => {
-        await fetch("/api/socket")
+            corpusa.sort()
 
-        const socket = io()
-        socket.on("connect", () => {
-            console.log("connected")
-            socket.emit("setType", "controller")
-            socket.emit("setComputers", "LAPTOP")
-        })
+            const main = document.getElementsByClassName(styles.main)[0]
 
-        socket.on("image", (data) => {
-            setImage(data)
-        })
-    }
+            for (const corpus of corpusa) {
+                const div = document.createElement("div")
+                const p = document.createElement("p")
+
+                p.textContent = corpus[0]
+                p.className = comfortaa.className
+                div.onclick = createOnClick(corpus[1])
+                div.className = styles.corpus
+
+                div.appendChild(p)
+                main.appendChild(div)
+            }
+        })()
+    }, [])
+
 
     return (
         <main className={styles.main}>
-            <img className={styles.image} alt={Date.now().toString()} id={"test"} src={image}/>
+
         </main>
     )
 }

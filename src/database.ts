@@ -21,6 +21,7 @@ export type User = {
 }
 export type Corpus = {
     "name": string,
+    "rus_name": string,
     "start_ip": string,
     "end_ip": string,
     "cabinets": {
