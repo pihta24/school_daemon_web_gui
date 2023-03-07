@@ -56,7 +56,7 @@ export default function Home() {
 
     return (
         <main className={styles.main}>
-            <ButtonBack/>
+            <div style={{marginTop: "-3rem"}}><ButtonBack/></div>
             <div id={"corpusa"} className={styles.corpus_container}>
 
             </div>

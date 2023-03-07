@@ -4,6 +4,7 @@ import io from 'socket.io-client'
 import styles from './page.module.css'
 import {useEffect, useState} from "react";
 import CommandForm from "@/command_sender";
+import ButtonBack from "@/button_back";
 
 
 export default function Home({params}: {params: {corpus: string, cabinet: string, computer: string}}) {
@@ -35,6 +36,7 @@ export default function Home({params}: {params: {corpus: string, cabinet: string
 
     return (
         <main className={styles.main}>
+            <div style={{position: "absolute", left:"2rem", top:"2rem"}}><ButtonBack/></div>
             <img className={styles.image} alt={`${corpus}-${cabinet}-${computer}`} src={image}/>
             <CommandForm corpus={corpus} cabinet={cabinet} computer={computer}/>
         </main>

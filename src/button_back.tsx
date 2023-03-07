@@ -5,7 +5,6 @@ const comfortaa = Comfortaa({subsets: ["latin", "cyrillic"]});
 export default function ButtonBack() {
     return (
         <div onClick={() => history.back()} className={comfortaa.className} style={{
-            marginTop: "-3rem",
             padding: "2rem",
             display: "flex",
             flexDirection: "column",

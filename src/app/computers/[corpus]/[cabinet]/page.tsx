@@ -5,6 +5,7 @@ import styles from './page.module.css';
 import {Comfortaa} from "@next/font/google";
 import {useEffect, useState, useRef} from "react";
 import CommandForm from "@/command_sender";
+import ButtonBack from "@/button_back";
 
 const comfortaa = Comfortaa({subsets: ["latin", "cyrillic"]});
 
@@ -95,6 +96,7 @@ export default function Home({params}: { params: { corpus: string, cabinet: stri
 
     return (
         <main className={styles.main}>
+            <div style={{position: "absolute", left:"2rem", top:"2rem"}}><ButtonBack/></div>
             <div className={styles.image_container}/>
             <CommandForm corpus={corpus} cabinet={cabinet} computer={undefined}/>
         </main>

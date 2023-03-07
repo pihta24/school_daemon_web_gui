@@ -61,7 +61,7 @@ export default function Home({params}: { params: { corpus: string} }) {
 
     return (
         <main className={styles.main}>
-            <ButtonBack/>
+            <div style={{marginTop: "-3rem"}}><ButtonBack/></div>
             <div id={"cabinets"} className={styles.cabinet_container}>
 
             </div>
