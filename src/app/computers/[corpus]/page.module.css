@@ -7,6 +7,15 @@
     gap: 3rem;
 }
 
+.cabinet_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 3rem;
+}
+
 .cabinet {
     font-size: 25px;
     padding: 2rem;
@@ -19,4 +28,5 @@
     height: 150px;
     background: rgba(121, 121, 121, 0.3);
     border-radius: 35px;
+    cursor: pointer;
 }

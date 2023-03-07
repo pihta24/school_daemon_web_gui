@@ -3,7 +3,8 @@
 import styles from './page.module.css'
 import {Comfortaa} from "@next/font/google";
 import {useEffect} from "react";
-import {notFound} from "next/navigation";
+import swal from "sweetalert";
+import ButtonBack from "@/button_back";
 
 const comfortaa = Comfortaa({subsets: ["latin", "cyrillic"]});
 
@@ -24,11 +25,23 @@ export default function Home({params}: { params: { corpus: string} }) {
                 })
             })
 
+            if (response.status !== 200) {
+                swal({text: "Нет доступных кабинетов", title: "Ошибка", icon: "error", className: comfortaa.className})
+                setTimeout(() => window.history.back(), 10000)
+                return
+            }
+
             const {cabinets} = await response.json() as { cabinets: string[] }
+
+            if (cabinets.length === 0) {
+                swal({text: "Нет доступных кабинетов", title: "Ошибка", icon: "error", className: comfortaa.className})
+                setTimeout(() => window.history.back(), 10000)
+                return
+            }
 
             cabinets.sort()
 
-            const main = document.getElementsByClassName(styles.main)[0]
+            const main = document.getElementById("cabinets")
 
             for (const cabinet of cabinets) {
                 const div = document.createElement("div")
@@ -40,7 +53,7 @@ export default function Home({params}: { params: { corpus: string} }) {
                 div.className = styles.cabinet
 
                 div.appendChild(p)
-                main.appendChild(div)
+                main?.appendChild(div)
             }
         })()
     }, [])
@@ -48,7 +61,10 @@ export default function Home({params}: { params: { corpus: string} }) {
 
     return (
         <main className={styles.main}>
+            <ButtonBack/>
+            <div id={"cabinets"} className={styles.cabinet_container}>
 
+            </div>
         </main>
     )
 }
